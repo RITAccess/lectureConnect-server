@@ -1,17 +1,44 @@
+// Requires
 var io = require('socket.io').listen(9000);
-var readline = require('readline');
+var mongoose = require('mongoose');
 
-var clients = {};
-
-// Set up serverside input
-var rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
+// Connecting to the database
+mongoose.connect('mongodb://localhost/test');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  // yay!
 });
 
-// Set up the server
+// Defining Lecture schema
+var lectureSchema = new mongoose.Schema({ 
+	name: String, 
+	date : { type : Number, default : Date.parse(new Date()) / 1000 },
+	data : {
+		test : String
+	}
+});
+var Lecture = mongoose.model('Lecture', lectureSchema);
+
+// TEST OBJECT
+var test = new Lecture({
+	name : "Saved Lecture",
+	date : Date.parse(new Date()) / 1000,
+	data : {
+		test: "Hello Class!"
+	}
+});
+test.save(function(err, obj) {
+	if(err)
+		console.log(err);
+});
+
+// Storing clients for later access
+var clients = {};
+
+// Setup the server
 io.configure('development', function() {
-	io.set('destroy upgrade', false);
+	io.set('log level', 1);
 });
 
 io.sockets.on('connection', function(socket) {
@@ -24,13 +51,32 @@ io.sockets.on('connection', function(socket) {
 	// Handle lecture request
 	socket.on('lecture-request', function(data){
 		console.log("Client request: " + data);
-		currentTime  = new Date();
-		socket.emit('lecture-response', {name : "Test Lecture", date : Date.parse(currentTime) / 1000, data : {}});
+		
+		// Lookup object
+		var query = Lecture.findOne({name : data});
+		query.select("name date data");
+		query.exec(function(err, lecture) {
+			if (!err) {
+				if (lecture == null) {
+					console.log("Lecture not found");
+					socket.emit('lecture-response-failed', {message : "Lecture not found"})
+					return;
+				}
+				console.log(lecture);
+				socket.emit('lecture-response', lecture);
+			}
+		})
+
+	});
+
+	// Handles client disconnection
+	socket.on('disconnect', function() {
+		console.log(socket.id + " has disconnected");
 	});
 });
 
 setInterval(function() {
-	console.log("Sending update");
-	io.sockets.emit('update', "Hello World!");
 
-}, 10000);
+
+
+}, 20000);
