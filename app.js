@@ -1,17 +1,12 @@
+// Requires
 var io = require('socket.io').listen(9000);
-var readline = require('readline');
 
+// Storing clients for later access
 var clients = {};
 
-// Set up serverside input
-var rl = readline.createInterface({
-	input: process.stdin,
-	output: process.stdout
-});
-
-// Set up the server
+// Setup the server
 io.configure('development', function() {
-	io.set('destroy upgrade', false);
+	io.set('log level', 1);
 });
 
 io.sockets.on('connection', function(socket) {
@@ -27,10 +22,16 @@ io.sockets.on('connection', function(socket) {
 		currentTime  = new Date();
 		socket.emit('lecture-response', {name : "Test Lecture", date : Date.parse(currentTime) / 1000, data : {}});
 	});
+
+	// Handles client disconnection
+	socket.on('disconnect', function() {
+		console.log(socket.id + " has disconnected");
+	});
 });
 
 setInterval(function() {
 	console.log("Sending update");
-	io.sockets.emit('update', "Hello World!");
-
+	for (key in clients) {
+		clients[key].emit('update', "Test");
+	}
 }, 10000);
