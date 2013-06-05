@@ -4,6 +4,7 @@
 
 var express = require('express');
 var app = express();
+var runtime = require('./LectureRuntime');
 var lectures = {}
 
 app.get('/', function(req, res){
@@ -15,6 +16,18 @@ app.get('/', function(req, res){
 	res.send(response);
 });
 
-app.listen(8080);
+app.get('/create/:id', function(req, res) {
+	console.log(req.params.id);
+	createLecture(req.params.id);
+	res.redirect('/');
+});
 
+function createLecture(lectureName) {
+	var TestLecture = new runtime(lectureName);
+	lectures[lectureName] = TestLecture;
+	TestLecture.start();
+}
+
+// Start webservice
+app.listen(8080);
 module.exports = lectures;

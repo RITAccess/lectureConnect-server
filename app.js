@@ -5,7 +5,6 @@
 // Requires
 var io = require('socket.io').listen(9000);
 var mongoose = require('mongoose');
-var runtime = require('./LectureRuntime');
 var lectures = require('./ManagementConsole');
 
 // Connecting to the database
@@ -46,27 +45,6 @@ var clients = {};
 io.configure('development', function() {
 	io.set('log level', 1);
 });
-
-// Lecture Runtimes
-var name = "Test Lecture 1";
-var TestLecture = new runtime(name);
-lectures[name] = TestLecture;
-TestLecture.start();
-
-var name = "Test Lecture 2";
-var TestLecture = new runtime(name);
-lectures[name] = TestLecture;
-TestLecture.start();
-
-var name = "Test Lecture 3";
-var TestLecture = new runtime(name);
-lectures[name] = TestLecture;
-TestLecture.start();
-
-var name = "Test Lecture 4";
-var TestLecture = new runtime(name);
-lectures[name] = TestLecture;
-TestLecture.start();
 
 // Create connections
 io.sockets.on('connection', function(socket) {
