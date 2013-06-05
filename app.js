@@ -26,20 +26,21 @@ var lectureSchema = new mongoose.Schema({
 var Lecture = mongoose.model('Lecture', lectureSchema);
 
 // TEST OBJECT
-var test = new Lecture({
-	name : "Saved Lecture",
-	date : Date.parse(new Date()) / 1000,
-	data : {
-		test: "Hello Class!"
-	}
-});
-test.save(function(err, obj) {
-	if(err)
-		console.log(err);
-});
+// var test = new Lecture({
+// 	name : "Saved Lecture",
+// 	date : Date.parse(new Date()) / 1000,
+// 	data : {
+// 		test: "Hello Class!"
+// 	}
+// });
+// test.save(function(err, obj) {
+// 	if(err)
+// 		console.log(err);
+// });
 
 // Storing clients for later access
 var clients = {};
+var lectures = {};
 
 // Setup the server
 io.configure('development', function() {
@@ -47,22 +48,26 @@ io.configure('development', function() {
 });
 
 // Lecture Runtimes
-var TestLecture = new runtime("Test Lecture");
+var name = "Test Lecture";
+var TestLecture = new runtime(name);
+lectures[name] = TestLecture;
 TestLecture.start();
+
+var name2 = "Test Lecture 2";
+var TestLecture2 = new runtime(name2);
+lectures[name2] = TestLecture2;
+TestLecture2.start();
 
 
 // Create connections
 io.sockets.on('connection', function(socket) {
 	// Add the client to the dictionary
 	console.log(socket.id + " connected");
-	clients[socket.id] = socket;
-	TestLecture.addClient(socket.id, socket);
 	socket.emit('Status',{info : "You have connected to AccessLecture development server."});
 
 	// Handle lecture request
 	socket.on('lecture-request', function(data){
 		console.log("Client request: " + data);
-		
 		// Lookup object
 		var query = Lecture.findOne({name : data});
 		query.select("name date data");
@@ -80,8 +85,25 @@ io.sockets.on('connection', function(socket) {
 
 	});
 
+	// Handles streaming request
+	socket.on('steaming-request', function(data){
+		console.log("Client " + socket.id + " requested connection to " + data);
+		if (data in lectures) {
+			if (socket.id in clients) {
+				clients[socket.id].removeClient(socket.id);
+			}
+			var lect = lectures[data];
+			clients[socket.id] = lect;
+			lect.addClient(socket.id, socket);
+		}
+	});
+
 	// Handles client disconnection
 	socket.on('disconnect', function() {
+		if (socket.id in clients) {
+			clients[socket.id].removeClient(socket.id);
+			delete clients[socket.id];
+		}
 		console.log(socket.id + " has disconnected");
 	});
 });

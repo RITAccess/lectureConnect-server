@@ -2,21 +2,25 @@
 // Driver for running a lecture on the http.ServerResponse
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
-
-var sittingClients;
-
 // Create a new runtime
-function LectureRuntime(name) {
-	this.name = name;
-	sittingClients = {};
+function LectureRuntime(Lname) {
+	this.name = Lname;
+	this.sittingClients = {};
+	this.numberOfClients = 0;
 	console.log("New Runtime: " + this.name);
 }
 
 LectureRuntime.prototype.addClient = function(client_id, socket) {
-	if (client_id in sittingClients) {
-		console.log("Client is already in this session");
-	} else {
-		sittingClients[client_id] = socket;
+	if (!(client_id in this.sittingClients)) {
+		this.sittingClients[client_id] = socket;
+		this.numberOfClients++;
+	}
+};
+
+LectureRuntime.prototype.removeClient = function(client_id) {
+	if (client_id in this.sittingClients) {
+		delete this.sittingClients[client_id];
+		this.numberOfClients--;
 	}
 };
 
@@ -30,13 +34,13 @@ LectureRuntime.prototype.start = function() {
 
 // Running loop
 function running() {
-	for (_id in sittingClients) {
-		var socket = sittingClients[_id];
+	if (this.numberOfClients > 0)
+		console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
+	for (_id in this.sittingClients) {
+		var socket = this.sittingClients[_id];
 		socket.emit('update',{message : "Test Message"});
-		console.log("Message to client " + _id);
 	}
 }
-
 
 // 'Return' the module
 module.exports = LectureRuntime;
