@@ -6,7 +6,7 @@
 var io = require('socket.io').listen(9000);
 var mongoose = require('mongoose');
 var runtime = require('./LectureRuntime');
-var frontend = require('./ManagementConsole');
+var lectures = require('./ManagementConsole');
 
 // Connecting to the database
 mongoose.connect('mongodb://localhost/test');
@@ -41,7 +41,6 @@ var Lecture = mongoose.model('Lecture', lectureSchema);
 
 // Storing clients for later access
 var clients = {};
-var lectures = {};
 
 // Setup the server
 io.configure('development', function() {
@@ -60,6 +59,11 @@ lectures[name] = TestLecture;
 TestLecture.start();
 
 var name = "Test Lecture 3";
+var TestLecture = new runtime(name);
+lectures[name] = TestLecture;
+TestLecture.start();
+
+var name = "Test Lecture 4";
 var TestLecture = new runtime(name);
 lectures[name] = TestLecture;
 TestLecture.start();
