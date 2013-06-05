@@ -28,7 +28,7 @@ LectureRuntime.prototype.removeClient = function(client_id) {
 LectureRuntime.prototype.start = function() {
 
 	// Testing Implementation of updated data...
-	setInterval(running, 5000);
+	setInterval(running.bind(this), 5000);
 
 };
 
