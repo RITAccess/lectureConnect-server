@@ -75,8 +75,3 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 
-setInterval(function() {
-
-
-
-}, 20000);
