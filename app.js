@@ -1,11 +1,12 @@
 // LectureConnect Server
-// Node and Socket.io server for running backend api
+// Node and Socket.io server for running backend api for AccessMath
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
 // Requires
 var io = require('socket.io').listen(9000);
 var mongoose = require('mongoose');
 var runtime = require('./LectureRuntime');
+var frontend = require('./ManagementConsole');
 
 // Connecting to the database
 mongoose.connect('mongodb://localhost/test');
@@ -48,16 +49,20 @@ io.configure('development', function() {
 });
 
 // Lecture Runtimes
-var name = "Test Lecture";
+var name = "Test Lecture 1";
 var TestLecture = new runtime(name);
 lectures[name] = TestLecture;
 TestLecture.start();
 
-var name2 = "Test Lecture 2";
-var TestLecture2 = new runtime(name2);
-lectures[name2] = TestLecture2;
-TestLecture2.start();
+var name = "Test Lecture 2";
+var TestLecture = new runtime(name);
+lectures[name] = TestLecture;
+TestLecture.start();
 
+var name = "Test Lecture 3";
+var TestLecture = new runtime(name);
+lectures[name] = TestLecture;
+TestLecture.start();
 
 // Create connections
 io.sockets.on('connection', function(socket) {
