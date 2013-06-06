@@ -3,8 +3,9 @@
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
 // Create a new runtime
-function LectureRuntime(Lname) {
+function LectureRuntime(Lname, desc) {
 	this.name = Lname;
+	this.description = desc;
 	this.sittingClients = {};
 	this.numberOfClients = 0;
 	console.log("New Runtime: " + this.name);

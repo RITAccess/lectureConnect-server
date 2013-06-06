@@ -17,13 +17,13 @@ body
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-            a.brand(href='#')= title
+            a.brand(href='/')= title
             .nav-collapse.collapse
                 p.navbar-text.pull-right
                     | Logged in as #{account}
                 ul.nav
                     li.active
-                        a(href='#') Home
+                        a(href='/') Dashboard
                     li
                         a(href='#createLecture', data-toggle='modal', data-target='#createLecture') Create Lecture
                     li
@@ -35,7 +35,9 @@ body
             button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
             h3#myModalLabel Create a new Lecture
           .modal-body
-            input(type='text',placeholder='Lecture Name',name='name')
+            input(type='text',placeholder='Lecture Name',name='name').create-lecture-form
+            br
+            textarea(name='desc',placeholder='Description').create-lecture-textarea
           .modal-footer
             button.btn(data-dismiss='modal', aria-hidden='true') Close
             input(type='submit', value='Create').btn.btn-primary

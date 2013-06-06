@@ -1,21 +1,33 @@
 extends layout
 
 block content
-  h3 Active Lectures
+  h3 Dashboard
 
   .row-fluid
     .span3
       .well.sidebar-nav
           ul.nav.nav-list
-            li.nav-header Total Clients in Lectures
-            li= clients
+            li.nav-header Total Clients in lectures    
+              span.badge.badge-info= clients
+            li.nav-header Total lectures    
+              span.badge.badge-info= lectureCount
             
     .span9
-    each lect in lectures
-      .span4
-          h2 #{lect.name}
-          p
-            | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-          p
-            a.btn(href='#') View details »
-            a.btn(href='/kill?name=' + lect.name) Delete
+      .hero-unit.dash
+        p Welcome to the LectureConnect Dashboard. Here you can see all the active lectures on the server and quickly bring up new instances of lectures. 
+      - var count = 0
+      - var maxChar = 240
+      each lect in lectures
+        - if (count % 3 == 0) {
+        .row-fluid
+        - }
+        - count++;
+        .span3
+            h2 #{lect.name}
+            p= lect.description.substring(0, maxChar)
+              - if (lect.description.length > maxChar) {
+              |...
+              - }
+            p
+              a.btn(href='#') View details »
+              a.btn(href='/kill?name=' + lect.name) Delete

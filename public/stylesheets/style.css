@@ -5,3 +5,16 @@ body {
 a {
   	color: #00B7FF;
 }
+
+.hero-unit.dash {
+	margin-top: 0px;
+	padding: 20px;
+}
+
+.create-lecture-form {
+	width: 500px;
+}
+.create-lecture-textarea {
+	width: 500px;
+	height: 100px;
+}

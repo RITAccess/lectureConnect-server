@@ -8,17 +8,22 @@ var Lecture = require('../LectureRuntime')
   , app = require('../app');
 
 exports.index = function(req, res){
+
+	var lectureCount = 0;
+	for (_ in lectures) lectureCount++;
+
   	res.render('index', { 
   		title: 'LectureConnect',
   		lectures : lectures,
   		clients : app.clientCount(),
+  		lectureCount : lectureCount,
   		account : req.user
   	});
 };
 
 exports.create = function(req, res) {
 	if (req.query.name != null) {
-		var run = new Lecture(req.query.name);
+		var run = new Lecture(req.query.name, req.query.desc);
 		lectures[req.query.name] = run;
 		run.start();
 	}
