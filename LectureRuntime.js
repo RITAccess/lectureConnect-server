@@ -32,6 +32,15 @@ LectureRuntime.prototype.start = function() {
 
 };
 
+LectureRuntime.prototype.stop = function() {
+	console.log("Stopping " + this.name + "...");
+	// Save and clean up lecture data, disconnect clients
+	delete this.sittingClients;
+	delete this.numberOfClients;
+	delete this.name;
+	console.log("Stopped");
+}
+
 // Running loop
 function running() {
 	if (this.numberOfClients > 0)

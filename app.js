@@ -4,12 +4,11 @@
 
 // Requires
 var io = require('socket.io').listen(9000);
-var mongoose = require('mongoose');
-var lectures = require('./ManagementConsole');
+var lectures = require('./lectures');
 
 // Connecting to the database
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.connection;
+var mongoose = require('mongoose')
+db = require('./db');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
   // yay!
@@ -82,7 +81,7 @@ io.sockets.on('connection', function(socket) {
 			var lect = lectures[data];
 			clients[socket.id] = lect;
 			lect.addClient(socket.id, socket);
-		}
+		} else console.log("No lecture active");
 	});
 
 	// Handles client disconnection
@@ -94,4 +93,7 @@ io.sockets.on('connection', function(socket) {
 		console.log(socket.id + " has disconnected");
 	});
 });
+
+// Create server
+var server = require('./ManagementConsole');
 

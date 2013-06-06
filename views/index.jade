@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  ul
+  each lect in lectures
+    li #{lect.name} has #{lect.numberOfClients} connected. [
+      a(href='/kill?name='+lect.name) delete
+      |]
+  br
+  form(action='/create', method='get')
+    input(type='text',name='name')
+    input(type='submit',value='create')

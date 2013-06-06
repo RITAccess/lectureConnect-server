@@ -2,32 +2,33 @@
 // Web frontend controller to communicate with appengine
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
-var express = require('express');
+var express = require('express')
+  , routes = require('./routes')
+  , http = require('http')
+  , path = require('path');
 var app = express();
-var runtime = require('./LectureRuntime');
-var lectures = {}
 
-app.get('/', function(req, res){
-	var response = 'LectureConnect<br />';
-	for (key in lectures) {
-		lecture = lectures[key]
-		response += key + ' has ' + lecture.numberOfClients + ' clients<br />';
-	}
-	res.send(response);
-});
+// all environments
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'jade');
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use(express.methodOverride());
+app.use(app.router);
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/create/:id', function(req, res) {
-	console.log(req.params.id);
-	createLecture(req.params.id);
-	res.redirect('/');
-});
-
-function createLecture(lectureName) {
-	var TestLecture = new runtime(lectureName);
-	lectures[lectureName] = TestLecture;
-	TestLecture.start();
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
 }
 
-// Start webservice
-app.listen(8080);
-module.exports = lectures;
+app.get('/', routes.index);
+app.get('/create', routes.create);
+app.get('/kill', routes.destroy);
+
+// Start webserver
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
