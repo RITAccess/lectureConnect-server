@@ -25,9 +25,20 @@ body
                     li.active
                         a(href='#') Home
                     li
-                        a(href='#about') Status
+                        a(href='#createLecture', data-toggle='modal', data-target='#createLecture') Create Lecture
                     li
                         a(href='/logout') Logout
+
+#createLecture.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+    form(action='/create', method='get')
+        .modal-header
+            button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+            h3#myModalLabel Create a new Lecture
+          .modal-body
+            input(type='text',placeholder='Lecture Name',name='name')
+          .modal-footer
+            button.btn(data-dismiss='modal', aria-hidden='true') Close
+            input(type='submit', value='Create').btn.btn-primary
 
 .container
     block content

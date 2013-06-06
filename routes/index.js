@@ -4,12 +4,14 @@
  */
 
 var Lecture = require('../LectureRuntime')
-  , lectures = require('../lectures');
+  , lectures = require('../lectures')
+  , app = require('../app');
 
 exports.index = function(req, res){
   	res.render('index', { 
   		title: 'LectureConnect',
   		lectures : lectures,
+  		clients : app.clientCount(),
   		account : req.user
   	});
 };

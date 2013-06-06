@@ -2,17 +2,20 @@ extends layout
 
 block content
   h3 Active Lectures
-  p Create Lecture
-  form(action='/create', method='get')
-    input(type='text',name='name')
-    input(type='submit',value='create')
 
   .row-fluid
-  each lect in lectures
-    .span4
-        h2 #{lect.name}
-        p
-          | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-        p
-          a.btn(href='#') View details »
-          a.btn(href='/kill?name=' + lect.name) Delete
+    .span3
+      .well.sidebar-nav
+          ul.nav.nav-list
+            li.nav-header Total Clients in Lectures
+            li= clients
+            
+    .span9
+    each lect in lectures
+      .span4
+          h2 #{lect.name}
+          p
+            | Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+          p
+            a.btn(href='#') View details »
+            a.btn(href='/kill?name=' + lect.name) Delete

@@ -39,6 +39,13 @@ var Lecture = mongoose.model('Lecture', lectureSchema);
 
 // Storing clients for later access
 var clients = {};
+exports.clientCount = function() {
+	var count = 0;
+	for (key in clients) { 
+		count++;
+	}
+	return count;
+}
 
 // Setup the server
 io.configure('development', function() {
