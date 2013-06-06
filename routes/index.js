@@ -7,7 +7,11 @@ var Lecture = require('../LectureRuntime')
   , lectures = require('../lectures');
 
 exports.index = function(req, res){
-  	res.render('index', { title: 'LectureConnect', lectures : lectures });
+  	res.render('index', { 
+  		title: 'LectureConnect',
+  		lectures : lectures,
+  		account : req.user
+  	});
 };
 
 exports.create = function(req, res) {
@@ -27,4 +31,8 @@ exports.destroy = function(req, res) {
 		delete lectures[req.query.name];
 	}
 	res.redirect('/');
+}
+
+exports.signin = function(req, res) {
+	res.render('signin', {title : 'LectureConnect'});
 }

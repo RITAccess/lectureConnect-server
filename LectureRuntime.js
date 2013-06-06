@@ -18,7 +18,7 @@ LectureRuntime.prototype.addClient = function(client_id, socket) {
 };
 
 LectureRuntime.prototype.removeClient = function(client_id) {
-	if (client_id in this.sittingClients) {
+	if (this.sittingClients && client_id in this.sittingClients) {
 		delete this.sittingClients[client_id];
 		this.numberOfClients--;
 	}

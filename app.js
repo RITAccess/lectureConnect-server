@@ -86,7 +86,7 @@ io.sockets.on('connection', function(socket) {
 
 	// Handles client disconnection
 	socket.on('disconnect', function() {
-		if (socket.id in clients) {
+		if (socket.id in clients && clients[socket.id]) {
 			clients[socket.id].removeClient(socket.id);
 			delete clients[socket.id];
 		}

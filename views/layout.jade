@@ -1,7 +1,33 @@
-doctype 5
-html
-  head
+!!! 5
+html(lang='en')
+head
+    meta(charset='utf-8')
     title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/bootstrap-responsive.min.css', rel='stylesheet')
+    link(href='/stylesheets/style.css', rel='stylesheet')
+    script(src='http://code.jquery.com/jquery-1.10.1.min.js')
+    script(src='/javascripts/bootstrap.min.js')
+body
+.navbar.navbar-fixed-top
+    .navbar-inner
+        .container
+            button.btn.btn-navbar(type='button', data-toggle='collapse', data-target='.nav-collapse')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.brand(href='#')= title
+            .nav-collapse.collapse
+                p.navbar-text.pull-right
+                    | Logged in as #{account}
+                ul.nav
+                    li.active
+                        a(href='#') Home
+                    li
+                        a(href='#about') Status
+                    li
+                        a(href='/logout') Logout
+
+.container
     block content
