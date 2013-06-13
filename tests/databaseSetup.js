@@ -19,6 +19,7 @@ db.once('open', function callback () {
 	// Lecture
 	var lectureSchema = new mongoose.Schema({ 
 		name: String, 
+		description: String,
 		date : { type : Number, default : Date.parse(new Date()) / 1000 },
 		data : []
 	});
@@ -32,6 +33,7 @@ db.once('open', function callback () {
 		// Create Data
 		var test = new Lecture({
 			name : passin,
+			description: "Test Description",
 			data : ['Test Data', 'More Test Data']
 		});
 

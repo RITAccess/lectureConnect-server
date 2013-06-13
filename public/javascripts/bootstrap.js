@@ -1992,6 +1992,7 @@
     this.source = this.options.source
     this.$menu = $(this.options.menu)
     this.shown = false
+    this.data = {}
     this.listen()
   }
 
@@ -2001,7 +2002,7 @@
 
   , select: function () {
       var val = this.$menu.find('.active').attr('data-value')
-      console.log("Select "+val);
+      $('#lecture-id').attr('value',this.data[val]._id);
       this.$element
         .val(this.updater(val))
         .change()
@@ -2062,6 +2063,11 @@
         return this.shown ? this.hide() : this
       }
 
+      that.data = {}
+      items.every(function(obj){
+        that.data[obj.name] = obj;
+      })
+
       return this.render(items.slice(0, this.options.items)).show()
     }
 
@@ -2096,8 +2102,7 @@
 
       items = $(items).map(function (i, item) {
         i = $(that.options.item).attr('data-value', item.name)
-        console.log(item);
-        i.find('a').html(that.highlighter(item))
+        i.find('a').html(that.highlighter(item) + " - " + item.description)
         return i[0]
       })
 
@@ -2265,7 +2270,7 @@
     source: []
   , items: 8
   , menu: '<ul class="search-typeahead dropdown-menu"></ul>'
-  , item: '<li><a href="http://google.com"></a></li>'
+  , item: '<li><a href="#"></a></li>'
   , minLength: 1
   }
 

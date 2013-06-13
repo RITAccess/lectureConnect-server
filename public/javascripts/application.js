@@ -11,8 +11,8 @@ $(document).ready(function(){
 	});
 
 	$('.search-box').keypress(function(e){
-		if(e.which == 13) {
-			console.log("enter");
+		if(e.which == 13 && $('#lecture-id').val() != '') {
+			window.location = '/lecture/'+$('#lecture-id').val();
 		}
 	});
 
@@ -43,12 +43,6 @@ function onMessage(data) {
 function searchServer (query, process) {
 	socket.emit('data-query', query);
 	socket.on('manage-founddata', function(data){
-		// var newData = [];
-		// for (var i = 0; i < data.length; i++) {
-		// 	var tmp = data[i].name;
-		// 	Object.defineProperty(tmp, '_id', data._id);
-		// 	newData[i] = tmp;
-		// }
 		process(data);
 	});
 

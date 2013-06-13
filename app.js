@@ -17,25 +17,13 @@ db.once('open', function callback () {
 // Defining Lecture schema
 var lectureSchema = new mongoose.Schema({ 
 	name: String, 
+	description: String,
 	date : { type : Number, default : Date.parse(new Date()) / 1000 },
 	data : {
 		test : String
 	}
 });
 var Lecture = mongoose.model('Lecture', lectureSchema);
-
-// TEST OBJECT
-// var test = new Lecture({
-// 	name : "Saved Lecture",
-// 	date : Date.parse(new Date()) / 1000,
-// 	data : {
-// 		test: "Hello Class!"
-// 	}
-// });
-// test.save(function(err, obj) {
-// 	if(err)
-// 		console.log(err);
-// });
 
 // Storing clients for later access
 var clients = {};
@@ -68,7 +56,7 @@ io.sockets.on('connection', function(socket) {
 		if (data.length < 2) return;
 		var re = new RegExp(data, 'i');
 		var query = Lecture.find({name : re});
-		query.select("name date data");
+		query.select("name date data description");
 		query.exec(function(err, lecture) {
 			if (!err) {
 				if (lecture != null) {

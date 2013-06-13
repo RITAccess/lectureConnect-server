@@ -5,7 +5,11 @@
 
 var Lecture = require('../LectureRuntime')
   , lectures = require('../lectures')
-  , app = require('../app');
+  , app = require('../app')
+  , mongoose = require('mongoose')
+  ,	db = require('../db');
+
+var Lecture = mongoose.model('Lecture');
 
 exports.index = function(req, res){
 
@@ -42,7 +46,11 @@ exports.destroy = function(req, res) {
 }
 
 exports.lecture = function(req, res) {
-	res.send(req.params.id);
+
+	var query = Lecture.findOne({_id : req.params.id});
+	query.exec(function(err, data){
+		res.send(data);
+	});
 }
 
 exports.signin = function(req, res) {
