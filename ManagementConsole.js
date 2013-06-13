@@ -4,6 +4,7 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , account = require('./routes/account')
   , http = require('http')
   , path = require('path')
   , passport = require('passport')
@@ -14,7 +15,7 @@ var app = express();
 passport.use(new LocalStrategy(
 	function(username, password, done) {
 		console.log("Attempted Login");
-		if (username == '7imbrook' && password == 'testpassword') {
+		if (username == 'admin' && password == 'admin') {
 			console.log("Successful login");
 			return done(null, username);
 		} else {
@@ -60,6 +61,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// Routes
 app.get('/', routes.index);
 app.get('/create', routes.create);
 app.get('/kill', routes.destroy);
@@ -72,6 +74,9 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/signin');
 });
+app.get('/account', account.index);
+app.get('/lecture/:id', routes.lecture);
+
 
 // Start webserver
 http.createServer(app).listen(app.get('port'), function(){

@@ -17,7 +17,8 @@ exports.index = function(req, res){
   		lectures : lectures,
   		clients : app.clientCount(),
   		lectureCount : lectureCount,
-  		account : req.user
+  		account : req.user,
+  		active : "Dashboard"
   	});
 };
 
@@ -38,6 +39,10 @@ exports.destroy = function(req, res) {
 		delete lectures[req.query.name];
 	}
 	res.redirect('/');
+}
+
+exports.lecture = function(req, res) {
+	res.send(req.params.id);
 }
 
 exports.signin = function(req, res) {

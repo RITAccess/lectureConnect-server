@@ -11,7 +11,7 @@ var mongoose = require('mongoose')
 db = require('./db');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
-  // yay!
+ 	// Connected 	
 });
 
 // Defining Lecture schema
@@ -57,6 +57,26 @@ io.sockets.on('connection', function(socket) {
 	// Add the client to the dictionary
 	console.log(socket.id + " connected");
 	socket.emit('Status',{info : "You have connected to AccessLecture development server."});
+
+	// Handle dashboard
+	socket.on('manage-connect', function(data) {
+		console.log(data);
+	});
+
+	// Current Data Query
+	socket.on('data-query', function (data) {
+		if (data.length < 2) return;
+		var re = new RegExp(data, 'i');
+		var query = Lecture.find({name : re});
+		query.select("name date data");
+		query.exec(function(err, lecture) {
+			if (!err) {
+				if (lecture != null) {
+					socket.emit('manage-founddata', lecture);
+				}
+			}
+		});
+	});
 
 	// Handle lecture request
 	socket.on('lecture-request', function(data){

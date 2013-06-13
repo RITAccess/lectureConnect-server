@@ -4,11 +4,13 @@ head
     meta(charset='utf-8')
     title= title
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(href='/stylesheets/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/bootstrap.css', rel='stylesheet')
     link(href='/stylesheets/bootstrap-responsive.min.css', rel='stylesheet')
     link(href='/stylesheets/style.css', rel='stylesheet')
     script(src='http://code.jquery.com/jquery-1.10.1.min.js')
-    script(src='/javascripts/bootstrap.min.js')
+    script(src='/javascripts/bootstrap.js')
+    script(src='/javascripts/socket.io.min.js')
+    script(src='/javascripts/application.js')
 body
 .navbar.navbar-fixed-top
     .navbar-inner
@@ -17,17 +19,29 @@ body
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-            a.brand(href='/')= title
+            a.brand(href='/') LectureConnect
             .nav-collapse.collapse
                 p.navbar-text.pull-right
                     | Logged in as #{account}
                 ul.nav
-                    li.active
+                    li.divider-vertical
+                    - var onDash = (active == 'Dashboard' ? 'active' : '')
+                    li(class=onDash)
                         a(href='/') Dashboard
+                    li.divider-vertical
+                    - var onAcc = (active == 'Account' ? 'active' : '')
+                    li(class=onAcc)
+                        a(href='/account') Account
+                    li.divider-vertical
                     li
                         a(href='#createLecture', data-toggle='modal', data-target='#createLecture') Create Lecture
+                    li.divider-vertical
                     li
                         a(href='/logout') Logout
+                    li.divider-vertical
+                    li
+                        input.search-box(placeholder='Search', autocomplete='off',id='search-box')
+                        input(hidden, id='lecture-id',value='')
 
 #createLecture.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
     form(action='/create', method='get')
