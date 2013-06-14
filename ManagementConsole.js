@@ -29,6 +29,7 @@ passport.use(new LocalStrategy(
 				sha512.update(password);
 				var hash = sha512.digest('hex');
 				if (obj.passhash == hash) {
+					console.log("Logged in " + obj.name);
 					done(null, obj.name);
 				} else {
 					done(null, null);
