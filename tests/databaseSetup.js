@@ -15,15 +15,8 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
 
-	// Define Schemas
-	// Lecture
-	var lectureSchema = new mongoose.Schema({ 
-		name: String, 
-		description: String,
-		date : { type : Number, default : Date.parse(new Date()) / 1000 },
-		data : []
-	});
-	var Lecture = mongoose.model('Lecture', lectureSchema);
+	// Grab Schema
+	var Lecture = mongoose.model('Lecture');
 
 	read.on('line', function(passin){
 		if (passin == '')  { 

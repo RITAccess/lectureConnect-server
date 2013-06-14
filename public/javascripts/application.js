@@ -6,13 +6,13 @@ $(document).ready(function(){
 	setupSocket();
 
 	// Set up search                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-	var searchdata = $('.search-box').typeahead({
+	$('.search-box').typeahead({
 		source : searchServer
 	});
 
 	$('.search-box').keypress(function(e){
 		if(e.which == 13 && $('#lecture-id').val() != '') {
-			window.location = '/lecture/'+$('#lecture-id').val();
+			window.location = '/lecture/' + $('#lecture-id').val() + "?name=" + this.value;
 		}
 	});
 

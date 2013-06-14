@@ -3,7 +3,7 @@
  * GET home page.
  */
 
-var Lecture = require('../LectureRuntime')
+var LectureRuntime = require('../LectureRuntime')
   , lectures = require('../lectures')
   , app = require('../app')
   , mongoose = require('mongoose')
@@ -28,9 +28,14 @@ exports.index = function(req, res){
 
 exports.create = function(req, res) {
 	if (req.query.name != null) {
-		var run = new Lecture(req.query.name, req.query.desc);
-		lectures[req.query.name] = run;
-		run.start();
+		var newLect = new Lecture({
+			name: req.query.name,
+			description: req.query.desc,
+			data: ['Test Data']
+		});
+		newLect.save(function(err, obj){
+			if (err) console.log("Did not save");
+		});
 	}
 	res.redirect('/');
 }
