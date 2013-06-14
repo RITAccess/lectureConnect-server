@@ -13,4 +13,11 @@ var lectureSchema = new mongoose.Schema({
 });
 mongoose.model('Lecture', lectureSchema);
 
+var userSchema = new mongoose.Schema({
+	name: String,
+	account: String,
+	passhash: String
+});
+mongoose.model('Users', userSchema);
+
 module.exports = db;

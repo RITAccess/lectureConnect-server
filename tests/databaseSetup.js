@@ -10,13 +10,26 @@ var read = readline.createInterface({
 
 // Connect to database
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/development');
-var db = mongoose.connection;
+var db = require('../db');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
 
 	// Grab Schema
 	var Lecture = mongoose.model('Lecture');
+	var User = mongoose.model('Users');
+
+	var crypto = require('crypto');
+	var sha512 = crypto.createHash('sha512');
+	sha512.update("admin");
+	var hash = sha512.digest('hex');
+
+	var admin = new User({
+		name: "Admin",
+		account: "admin",
+		passhash: hash
+	});
+
+	admin.save();
 
 	read.on('line', function(passin){
 		if (passin == '')  { 

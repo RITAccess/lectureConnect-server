@@ -9,19 +9,32 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+  , LocalStrategy = require('passport-local').Strategy
+  , mongoose = require('mongoose')
+  , db = require('./db');
 var app = express();
 
 // Setup auth
 passport.use(new LocalStrategy(
 	function(username, password, done) {
-		console.log("Attempted Login");
-		if (username == 'admin' && password == 'admin') {
-			console.log("Successful login");
-			return done(null, username);
-		} else {
-			return done(null, false);
-		}
+		var User = mongoose.model('Users');
+		User.findOne({ account : username }).exec(function(err, obj) {
+			if (err) console.log("Error");
+			if (obj == null) {
+				done(null, null);
+			} else {
+				// Begin check
+				var crypto = require('crypto');
+				var sha512 = crypto.createHash('sha512');
+				sha512.update(password);
+				var hash = sha512.digest('hex');
+				if (obj.passhash == hash) {
+					done(null, obj.name);
+				} else {
+					done(null, null);
+				}
+			}
+		});
 	}
 ));
 
@@ -45,11 +58,12 @@ app.use(express.session({secret: 'hSu6gT9' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.methodOverride());
+// Check auth
 app.use(function(req, res, next) {
 	// Check login
 	var pass = req.url.match(/\/stylesheets*|\/javascripts*|\/img*|\/signin/g);
 	if (req.user != null || pass ) {
-		next();
+		next(); // Allow static past (for development)
 	} else {
 		res.render('signin', {title : 'LectureConnect'});
 	}
