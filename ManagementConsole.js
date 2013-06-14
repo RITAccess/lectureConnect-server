@@ -90,6 +90,7 @@ app.get('/logout', function(req, res){
   res.redirect('/signin');
 });
 app.get('/account', account.index);
+app.post('/account/changepassword', account.changepassword);
 app.get('/lecture/:id', routes.lecture);
 app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);
