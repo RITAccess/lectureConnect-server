@@ -53,6 +53,10 @@ body
             br
             textarea(name='desc',placeholder='Description').create-lecture-textarea
           .modal-footer
+            .create-lecture-radio
+                label.checkbox.inline
+                    input(type='checkbox',name='startActive')
+                    | Start now
             button.btn(data-dismiss='modal', aria-hidden='true') Close
             input(type='submit', value='Create').btn.btn-primary
 

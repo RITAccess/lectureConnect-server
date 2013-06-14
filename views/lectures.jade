@@ -2,10 +2,15 @@ extends layout
 
 block content
 	h1 #{lecture.name}
-		- if (lecture.isActive)
+		if (lecture.isActive)
 			i.icon-ok-sign.status 
 				.status Online
-		- else
+		else
 			i.icon-minus-sign.status 
 				.status Offline
 	p #{lecture.description}
+	p
+		if (lecture.isActive)
+			a(href='/kill/'+lecture._id) Stop
+		else 
+			a(href='/start/'+lecture._id) Start

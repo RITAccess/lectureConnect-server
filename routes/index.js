@@ -13,21 +13,22 @@ var Lecture = mongoose.model('Lecture');
 
 exports.index = function(req, res){
 
-	var lectureCount = 0;
-	for (_ in lectures) lectureCount++;
+	Lecture.find({isActive: true}).exec(function(err, data){
 
-  	res.render('index', { 
-  		title: 'LectureConnect',
-  		lectures : lectures,
-  		clients : app.clientCount(),
-  		lectureCount : lectureCount,
-  		account : req.user,
-  		active : "Dashboard"
-  	});
+		res.render('index', { 
+	  		title: 'LectureConnect',
+	  		lectures : data,
+	  		clients : app.clientCount(),
+	  		lectureCount : data.length,
+	  		account : req.user,
+	  		active : "Dashboard"
+  		});
+
+	});
 };
 
 exports.create = function(req, res) {
-	if (req.query.name != null) {
+	if (req.query.name != null && req.query.desc != null) {
 		var newLect = new Lecture({
 			name: req.query.name,
 			description: req.query.desc,
@@ -35,19 +36,13 @@ exports.create = function(req, res) {
 		});
 		newLect.save(function(err, obj){
 			if (err) console.log("Did not save");
+			if (req.query.startActive) {
+				res.redirect('/start/'+obj._id);
+			} else {
+				res.redirect('/');
+			}
 		});
 	}
-	res.redirect('/');
-}
-
-exports.destroy = function(req, res) {
-	if (req.query.name != null) {
-		var lecture = lectures[req.query.name];
-		lecture.stop();
-		delete lecture;
-		delete lectures[req.query.name];
-	}
-	res.redirect('/');
 }
 
 exports.lecture = function(req, res) {

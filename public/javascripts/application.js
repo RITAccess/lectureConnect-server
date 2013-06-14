@@ -19,7 +19,6 @@ $(document).ready(function(){
 	// Search shortcut
 	$('html').keypress(function(e) {
 		switch(e.which) {
-			case 83: // <- not working?
 			case 47:
 				e.preventDefault();
 				$('.search-box').focus();

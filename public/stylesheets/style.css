@@ -19,6 +19,11 @@ a {
 	height: 100px;
 }
 
+.create-lecture-radio {
+	float: left;
+	padding: 5px;
+}
+
 .search-box {
 	margin-top: 7px;
 	padding-left: 7px;

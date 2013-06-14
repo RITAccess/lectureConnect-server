@@ -40,7 +40,7 @@ io.sockets.on('connection', function(socket) {
 
 	// Handle dashboard
 	socket.on('manage-connect', function(data) {
-		console.log(data);
+		// console.log(data);
 	});
 
 	// Current Data Query

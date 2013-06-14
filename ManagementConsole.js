@@ -5,6 +5,7 @@
 var express = require('express')
   , routes = require('./routes')
   , account = require('./routes/account')
+  , control = require('./routes/control')
   , http = require('http')
   , path = require('path')
   , passport = require('passport')
@@ -64,7 +65,6 @@ if ('development' == app.get('env')) {
 // Routes
 app.get('/', routes.index);
 app.get('/create', routes.create);
-app.get('/kill', routes.destroy);
 app.get('/signin', routes.signin);
 app.post('/signin', passport.authenticate('local', {
 	successRedirect: '/',
@@ -76,6 +76,8 @@ app.get('/logout', function(req, res){
 });
 app.get('/account', account.index);
 app.get('/lecture/:id', routes.lecture);
+app.get('/start/:id', control.start);
+app.get('/kill/:id', control.destroy);
 
 
 // Start webserver

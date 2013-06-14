@@ -3,11 +3,12 @@
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
 // Create a new runtime
-function LectureRuntime(Lname, desc) {
+function LectureRuntime(Lname, desc, lecture) {
 	this.name = Lname;
 	this.description = desc;
 	this.sittingClients = {};
 	this.numberOfClients = 0;
+	this.lecture = lecture;
 	console.log("New Runtime: " + this.name);
 }
 
@@ -38,6 +39,7 @@ LectureRuntime.prototype.stop = function() {
 	// Save and clean up lecture data, disconnect clients
 	delete this.sittingClients;
 	delete this.numberOfClients;
+	delete this.lecture;
 	delete this.name;
 	console.log("Stopped");
 }
@@ -48,7 +50,7 @@ function running() {
 		console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
 	for (_id in this.sittingClients) {
 		var socket = this.sittingClients[_id];
-		socket.emit('update',{message : "Test Message"});
+		socket.emit('update',{message : this.lecture.data});
 	}
 }
 
