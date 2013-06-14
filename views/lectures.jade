@@ -1,0 +1,11 @@
+extends layout
+
+block content
+	h1 #{lecture.name}
+		- if (lecture.isActive)
+			i.icon-ok-sign.status 
+				.status Online
+		- else
+			i.icon-minus-sign.status 
+				.status Offline
+	p #{lecture.description}

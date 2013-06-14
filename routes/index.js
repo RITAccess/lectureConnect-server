@@ -51,13 +51,19 @@ exports.destroy = function(req, res) {
 }
 
 exports.lecture = function(req, res) {
-
 	var query = Lecture.findOne({_id : req.params.id});
 	query.exec(function(err, data){
-		res.send(data);
+		res.render('lectures', {
+			title: data.name,
+			lecture: data
+		});
 	});
 }
 
 exports.signin = function(req, res) {
 	res.render('signin', {title : 'LectureConnect'});
 }
+
+
+
+
