@@ -4,6 +4,7 @@
 
 // Requires
 var io = require('socket.io').listen(9000);
+var LectureRuntime = require('./LectureRuntime');
 var lectures = require('./lectures');
 
 // Connecting to the database
@@ -99,6 +100,25 @@ io.sockets.on('connection', function(socket) {
 		}
 		console.log(socket.id + " has disconnected");
 	});
+
+	// Set up streamer to lecture.
+	socket.on('connect-teacher', function(data){
+		console.log(data);
+		var lecture = lectures[data.name];
+		lecture.setStream(socket);		
+	});
+
+});
+
+// Restore last state
+Lecture.find().exec(function(err, objs) {
+	if (err) console.log(err);
+	for(i in objs) {
+		if( objs[i].isActive ) {
+			var lectureRuntime = new LectureRuntime(objs[i].name, objs[i].description, objs[i]);
+			lectures[objs[i].name] = lectureRuntime;
+		}
+	}
 });
 
 // Create server

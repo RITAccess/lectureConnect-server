@@ -18,7 +18,6 @@ exports.start = function(req, res) {
 		} else {
 			// start runtime	
 			var lectureRuntime = new LectureRuntime(obj.name, obj.description, obj);
-			lectureRuntime.start();
 			lectures[obj.name] = lectureRuntime;
 			// update status
 			obj.isActive = true;

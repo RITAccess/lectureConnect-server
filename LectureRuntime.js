@@ -9,6 +9,7 @@ function LectureRuntime(Lname, desc, lecture) {
 	this.sittingClients = {};
 	this.numberOfClients = 0;
 	this.lecture = lecture;
+	this.stream = null;
 	console.log("New Runtime: " + this.name);
 }
 
@@ -26,11 +27,21 @@ LectureRuntime.prototype.removeClient = function(client_id) {
 	}
 };
 
+LectureRuntime.prototype.setStream = function(socket) {
+	this.stream = socket;
+	this.start();
+	this.stream.emit('status', {status : "ready"})
+};
+
 // Start the lecture updating
 LectureRuntime.prototype.start = function() {
 
-	// Testing Implementation of updated data...
-	setInterval(running.bind(this), 5000);
+	var that = this;
+
+	// Push updated from stream
+	this.stream.on('update', function(data) {
+		that.sendToClients(data);
+	});
 
 };
 
@@ -53,18 +64,12 @@ LectureRuntime.prototype.stop = function() {
 }
 
 // Running loop
-function running() {
+LectureRuntime.prototype.sendToClients = function(data) {
 	if (this.numberOfClients > 0)
 		console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
 	for (_id in this.sittingClients) {
 		var socket = this.sittingClients[_id];
-		socket.emit('update',{message : { 
-			date : Date.parse(new Date()) / 1000,
-			update: {
-				x : Math.floor(Math.random()*1024),
-				y : Math.floor(Math.random()*760)
-			}
-		}});
+		socket.emit('update', data);
 	}
 }
 

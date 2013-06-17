@@ -40,7 +40,21 @@ db.once('open', function callback () {
 		var test = new Lecture({
 			name : passin,
 			description: "Test Description",
-			data : ['Test Data', 'More Test Data']
+			data : [
+				{ 
+					date : Date.parse(new Date()) / 1000,
+					update: {
+						x : Math.floor(Math.random()*1024),
+						y : Math.floor(Math.random()*760)
+					}
+				},
+				{ 
+					date : Date.parse(new Date()) / 1000,
+					update: {
+						x : Math.floor(Math.random()*1024),
+						y : Math.floor(Math.random()*760)
+					}
+				}]
 		});
 
 		test.save(function(err, obj) {
