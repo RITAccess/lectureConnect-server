@@ -46,7 +46,8 @@ io.sockets.on('connection', function(socket) {
 	// Current Data Query
 	socket.on('data-query', function (data) {
 		if (data.length < 2) return;
-		var re = new RegExp(data, 'i');
+		var cleandata = data.replace(/[^\w\s]/gi,'');
+		var re = new RegExp(cleandata, 'i');
 		var query = Lecture.find({name : re});
 		query.select("name description");
 		query.exec(function(err, lecture) {
@@ -63,7 +64,6 @@ io.sockets.on('connection', function(socket) {
 		console.log("Client request: " + data);
 		// Lookup object
 		var query = Lecture.findOne({name : data});
-		query.select("name date data");
 		query.exec(function(err, lecture) {
 			if (!err) {
 				if (lecture == null) {

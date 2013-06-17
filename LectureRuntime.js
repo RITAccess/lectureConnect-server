@@ -37,6 +37,14 @@ LectureRuntime.prototype.start = function() {
 LectureRuntime.prototype.stop = function() {
 	console.log("Stopping " + this.name + "...");
 	// Save and clean up lecture data, disconnect clients
+	for (_id in this.sittingClients)  {
+		var socket = this.sittingClients[_id];
+		socket.emit('termination', {
+			message: 'Stream is ending',
+			status: 'clean'
+		});
+	}
+	// Remove referances
 	delete this.sittingClients;
 	delete this.numberOfClients;
 	delete this.lecture;
@@ -50,7 +58,13 @@ function running() {
 		console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
 	for (_id in this.sittingClients) {
 		var socket = this.sittingClients[_id];
-		socket.emit('update',{message : this.lecture.data});
+		socket.emit('update',{message : { 
+			date : Date.parse(new Date()) / 1000,
+			update: {
+				x : Math.floor(Math.random()*1024),
+				y : Math.floor(Math.random()*760)
+			}
+		}});
 	}
 }
 
