@@ -48,9 +48,34 @@ exports.create = function(req, res) {
 exports.lecture = function(req, res) {
 	var query = Lecture.findOne({_id : req.params.id});
 	query.exec(function(err, data){
+		
+		// Get runtime if active
+		if (data.isActive) {
+			var runtime = lectures[data.name];
+			var clients = runtime.getClients();
+		} else {
+			var clients = [];
+		}
+
+		// Get information about streamer if available
+		var stream_status = "error";
+		var stream_host = "No Server Connected";
+		if (runtime) {
+			var info;
+			if(info = runtime.getStreamInfo()) {
+				stream_status = "success";
+				stream_host = info;
+			}
+		}
+
 		res.render('lectures', {
+			account : req.user,
 			title: data.name,
-			lecture: data
+			lecture: data,
+			clients : clients,
+			status : data.isActive ? "success" : "error",
+			stream_status : stream_status,
+			stream_host : stream_host
 		});
 	});
 }

@@ -4,13 +4,44 @@ block content
 	h1 #{lecture.name}
 		if (lecture.isActive)
 			i.icon-ok-sign.status 
-				.status Online
+				.status.online Online
 		else
 			i.icon-minus-sign.status 
-				.status Offline
+				.status.offline Offline
 	p #{lecture.description}
 	p
 		if (lecture.isActive)
 			a(href='/kill/'+lecture._id) Stop
 		else 
 			a(href='/start/'+lecture._id) Start
+	.row
+		.span6
+			h3 Lecture Information
+			table.table.table-bordered.table-hover
+				tbody
+					tr(class=status)
+						td Status
+						if (lecture.isActive)
+							td Online
+						else 
+							td Offline
+					tr(class=stream_status)
+						td Streaming Server
+						td= stream_host
+		.span6
+			h3 Connected Clients
+			if(clients.length > 0)
+				table.table.table-bordered.table-hover
+					thead
+						tr
+							td UID
+							td Client
+					tbody
+					each client in clients
+						tr
+							td= client.id
+							td= client.name
+			else
+				h4.muted No Clients Connected
+
+

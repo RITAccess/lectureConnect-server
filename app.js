@@ -37,7 +37,14 @@ io.configure('development', function() {
 io.sockets.on('connection', function(socket) {
 	// Add the client to the dictionary
 	console.log(socket.id + " connected");
+	socket.name = "Unnamed";
 	socket.emit('Status',{info : "You have connected to AccessLecture development server."});
+
+	// Get name
+	socket.emit('get-name');
+	socket.on('set-name', function(data) {
+		socket.name = data;
+	});
 
 	// Handle dashboard
 	socket.on('manage-connect', function(data) {
@@ -104,8 +111,12 @@ io.sockets.on('connection', function(socket) {
 	// Set up streamer to lecture.
 	socket.on('connect-teacher', function(data){
 		console.log(data);
-		var lecture = lectures[data.name];
-		lecture.setStream(socket);		
+		if ( data.name in lectures ) {
+			var lecture = lectures[data.name];
+			lecture.setStream(socket);	
+		} else {
+			socket.emit('status', {status : 'error', message : 'No lecture found'});
+		}	
 	});
 
 });

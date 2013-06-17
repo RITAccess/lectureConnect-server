@@ -27,13 +27,34 @@ LectureRuntime.prototype.removeClient = function(client_id) {
 	}
 };
 
+LectureRuntime.prototype.getClients = function() {
+	var clients = [];
+	var i = 0;
+	for(key in this.sittingClients) {
+		clients[i] = this.sittingClients[key];
+		i++;
+	}
+	return clients;
+}
+
 LectureRuntime.prototype.setStream = function(socket) {
+	var that = this;
 	this.stream = socket;
+	this.stream.on('disconnect', function(){
+		delete that.stream;
+	});
 	this.start();
 	this.stream.emit('status', {status : "ready"})
 };
 
-// Start the lecture updating
+LectureRuntime.prototype.getStreamInfo = function() {
+	if (this.stream) {
+		return this.stream.name;
+	} else {
+		return null;
+	}
+}
+
 LectureRuntime.prototype.start = function() {
 
 	var that = this;

@@ -24,7 +24,7 @@ exports.start = function(req, res) {
 			obj.save();
 		}
 	});
-	res.redirect('/');
+	res.redirect('/lecture/'+req.params.id);
 }
 
 exports.destroy = function(req, res) {
@@ -41,5 +41,5 @@ exports.destroy = function(req, res) {
 			obj.save();
 		}
 	});
-	res.redirect('/');
+	res.redirect('/lecture/'+req.params.id);
 }
