@@ -1,4 +1,4 @@
-// LectureConntect Managment Console
+	// LectureConntect Managment Console
 // Web frontend controller to communicate with appengine
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
@@ -100,8 +100,7 @@ app.get('/kill/:id', control.destroy);
 // Setup SSL
 var options = {
 	key : fs.readFileSync('./src/certs/server.key'),
-	cert : fs.readFileSync('./src/certs/server.crt'),
-	ca : fs.readFileSync('./src/certs/ca.crt')
+	cert : fs.readFileSync('./src/certs/server.crt')
 };
 
 // Start webserver
