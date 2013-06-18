@@ -3,9 +3,12 @@
 // Author: Michael Timbrook <mpt2360@rit.edu>
 
 // Requires
-var io = require('socket.io').listen(9000);
-var LectureRuntime = require('./LectureRuntime');
-var lectures = require('./lectures');
+var manage = require('./ManagementConsole')
+  , https = require('https')
+  , io = require('socket.io').listen(manage)
+  , fs = require('fs')
+  , LectureRuntime = require('./LectureRuntime')
+  , lectures = require('./lectures');
 
 // Connecting to the database
 var mongoose = require('mongoose')
@@ -131,7 +134,4 @@ Lecture.find().exec(function(err, objs) {
 		}
 	}
 });
-
-// Create server
-var server = require('./ManagementConsole');
 

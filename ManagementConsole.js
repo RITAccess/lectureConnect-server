@@ -7,6 +7,7 @@ var express = require('express')
   , account = require('./routes/account')
   , control = require('./routes/control')
   , https = require('https')
+  , http = require('http')
   , path = require('path')
   , crypto = require('crypto')
   , fs = require('fs')
@@ -97,12 +98,14 @@ app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);
 
 // Setup SSL
-var options = {
-	key : fs.readFileSync('./src/certs/privatekey.pem'),
-	cert : fs.readFileSync('./src/certs/certificate.pem')
-};
+// var options = {
+// 	key : fs.readFileSync('./src/certs/server.key'),
+// 	cert : fs.readFileSync('./src/certs/server.crt')
+// };
 
 // Start webserver
-https.createServer(options, app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+module.exports = server;
