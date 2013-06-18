@@ -33,7 +33,7 @@ $(document).ready(function(){
 function setupSocket () {
 	console.log("Setting up connection to "+document.location.hostname);
 
-	socket = io.connect(document.location.hostname)
+	socket = io.connect(document.location.hostname, {secure : true})
 	socket.on('connect', function(data) {
 		console.log("Connected.");
 		socket.emit('manage-connect', {request : 'connection'})

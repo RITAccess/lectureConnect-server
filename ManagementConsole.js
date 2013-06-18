@@ -98,13 +98,14 @@ app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);
 
 // Setup SSL
-// var options = {
-// 	key : fs.readFileSync('./src/certs/server.key'),
-// 	cert : fs.readFileSync('./src/certs/server.crt')
-// };
+var options = {
+	key : fs.readFileSync('./src/certs/server.key'),
+	cert : fs.readFileSync('./src/certs/server.crt'),
+	ca : fs.readFileSync('./src/certs/ca.crt')
+};
 
 // Start webserver
-var server = http.createServer(app).listen(app.get('port'), function(){
+var server = https.createServer(options, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 
