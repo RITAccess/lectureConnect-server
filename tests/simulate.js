@@ -9,7 +9,7 @@ socket.on('connect', function() {
 
 	// Connect to Math Class as teacher
 	socket.emit('connect-teacher', {
-		name : 'Math Class'
+		name : 'PSE'
 	});
 
 	// Respond to get-name

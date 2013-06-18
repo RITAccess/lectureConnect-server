@@ -6,8 +6,10 @@ var express = require('express')
   , routes = require('./routes')
   , account = require('./routes/account')
   , control = require('./routes/control')
-  , http = require('http')
+  , https = require('https')
   , path = require('path')
+  , crypto = require('crypto')
+  , fs = require('fs')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , mongoose = require('mongoose')
@@ -24,7 +26,6 @@ passport.use(new LocalStrategy(
 				done(null, null);
 			} else {
 				// Begin check
-				var crypto = require('crypto');
 				var sha512 = crypto.createHash('sha512');
 				sha512.update(password);
 				var hash = sha512.digest('hex');
@@ -95,8 +96,13 @@ app.get('/lecture/:id', routes.lecture);
 app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);
 
+// Setup SSL
+var options = {
+	key : fs.readFileSync('./src/certs/privatekey.pem'),
+	cert : fs.readFileSync('./src/certs/certificate.pem')
+};
 
 // Start webserver
-http.createServer(app).listen(app.get('port'), function(){
+https.createServer(options, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

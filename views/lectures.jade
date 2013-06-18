@@ -29,7 +29,9 @@ block content
 						td Streaming Server
 						td= stream_host
 		.span6
-			h3 Connected Clients
+			h3 
+				| Connected Clients 
+				span.muted #{clients.length}
 			if(clients.length > 0)
 				table.table.table-bordered.table-hover
 					thead
