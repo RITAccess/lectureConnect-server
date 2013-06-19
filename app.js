@@ -5,10 +5,21 @@
 // Requires
 var manage = require('./ManagementConsole')
   , https = require('https')
-  , io = require('socket.io').listen(manage)
+  , http = require('http')
+  , sio = require('socket.io')
   , fs = require('fs')
   , LectureRuntime = require('./LectureRuntime')
   , lectures = require('./lectures');
+
+// Socket SSL
+// var options = {
+// 	key : fs.readFileSync('./src/certs/server.key'),
+// 	cert : fs.readFileSync('./src/certs/server.crt')
+// };
+
+var socketServer = http.createServer();
+var io = sio.listen(socketServer);
+socketServer.listen(9000);
 
 // Connecting to the database
 var mongoose = require('mongoose')

@@ -31,9 +31,14 @@ $(document).ready(function(){
 // Set up websocket connection back to server
 
 function setupSocket () {
-	console.log("Setting up connection to "+document.location.hostname);
+	console.log("Setting up connection to "+document.location.hostname + ':9000');
 
-	socket = io.connect(document.location.hostname, {secure : true})
+	// socket = io.connect(document.location.hostname + ':9000', {secure : true});
+
+	var host = document.location.hostname + ':9000';
+	host = 'http://' + host;
+
+	socket = io.connect(host);
 	socket.on('connect', function(data) {
 		console.log("Connected.");
 		socket.emit('manage-connect', {request : 'connection'})
