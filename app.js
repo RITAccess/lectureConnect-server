@@ -49,6 +49,7 @@ io.configure('development', function() {
 
 // Create connections
 io.sockets.on('connection', function(socket) {
+
 	// Add the client to the dictionary
 	console.log(socket.id + " connected");
 	socket.name = "Unnamed";

@@ -32,7 +32,7 @@ exports.create = function(req, res) {
 		var newLect = new Lecture({
 			name: req.query.name,
 			description: req.query.desc,
-			data: ['Test Data']
+			data: []
 		});
 		newLect.save(function(err, obj){
 			if (err) console.log("Did not save");

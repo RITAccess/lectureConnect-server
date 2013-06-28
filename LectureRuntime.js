@@ -10,6 +10,7 @@ function LectureRuntime(Lname, desc, lecture) {
 	this.numberOfClients = 0;
 	this.lecture = lecture;
 	this.stream = null;
+	this.screenData = null;
 	console.log("New Runtime: " + this.name);
 }
 
@@ -17,6 +18,10 @@ LectureRuntime.prototype.addClient = function(client_id, socket) {
 	if (!(client_id in this.sittingClients)) {
 		this.sittingClients[client_id] = socket;
 		this.numberOfClients++;
+	}
+	var data = this.lecture.data;
+	for (var i = 1; i < data.length; i++) { // Still inits with Test Data First
+		socket.emit('update', data[i]);
 	}
 };
 
@@ -44,8 +49,21 @@ LectureRuntime.prototype.setStream = function(socket) {
 		delete that.stream;
 	});
 	this.start();
-	this.stream.emit('status', {status : "ready"})
+	this.stream.emit('status', {status : "ready"});
+	this.stream.emit('get-size');
+	this.stream.emit('set-cord', function(data){
+		that.screenData = data;
+		that.updateScreenSize();
+	});
 };
+
+LectureRuntime.prototype.updateScreenSize = function() {
+	var that = this;
+	for (_id in this.sittingClients)  {
+		var socket = this.sittingClients[_id];
+		socket.emit('set-size', that.screenData );
+	}
+}
 
 LectureRuntime.prototype.getStreamInfo = function() {
 	if (this.stream) {
@@ -61,6 +79,9 @@ LectureRuntime.prototype.start = function() {
 
 	// Push updated from stream
 	this.stream.on('update', function(data) {
+		// Save data to lecture
+		that.lecture.data.push(data);
+		that.lecture.save();
 		that.sendToClients(data);
 	});
 
@@ -86,8 +107,8 @@ LectureRuntime.prototype.stop = function() {
 
 // Running loop
 LectureRuntime.prototype.sendToClients = function(data) {
-	if (this.numberOfClients > 0)
-		console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
+	// if (this.numberOfClients > 0)
+		// console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
 	for (_id in this.sittingClients) {
 		var socket = this.sittingClients[_id];
 		socket.emit('update', data);

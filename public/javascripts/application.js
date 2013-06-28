@@ -16,6 +16,10 @@ $(document).ready(function(){
 		}
 	});
 
+	$('#clearData').click(function(){
+		window.location = '/clear/' + $('#clearData').attr('meta');
+	});
+
 	// Search shortcut
 	$('html').keypress(function(e) {
 		switch(e.which) {
@@ -61,3 +65,5 @@ function searchServer (query, process) {
 	});
 
 }
+
+

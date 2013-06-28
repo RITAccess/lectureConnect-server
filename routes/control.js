@@ -43,3 +43,16 @@ exports.destroy = function(req, res) {
 	});
 	res.redirect('/lecture/'+req.params.id);
 }
+
+exports.cleardata = function(req, res) {
+	Lecture.findOne({_id : req.params.id}).exec(function(err, obj){
+		if (err){
+			console.log("Error");
+		} else {
+			delete obj.data;
+			obj.data = [];
+			obj.save();
+		}
+	});
+	res.redirect('/lecture/'+req.params.id);
+}

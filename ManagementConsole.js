@@ -96,6 +96,7 @@ app.post('/account/changepassword', account.changepassword);
 app.get('/lecture/:id', routes.lecture);
 app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);
+app.get('/clear/:id', control.cleardata);
 
 // Setup SSL
 var options = {
