@@ -20,9 +20,24 @@ LectureRuntime.prototype.addClient = function(client_id, socket) {
 		this.numberOfClients++;
 	}
 	var data = this.lecture.data;
-	for (var i = 1; i < data.length; i++) { // Still inits with Test Data First
-		socket.emit('update', data[i]);
+	console.log("Sending "+this.lecture.data.length+" diffs to client");
+	socket.emit('update-info', {
+		info : 'start',
+		count : data.length
+	});
+	for (var i = 0; i < data.length; i++) {
+		update = {
+			index : i,
+			info : 'update',
+			action : data[i].action,
+			x : data[i].x,
+			y : data[i].y
+		}
+		socket.emit('update-info', update);
 	}
+	socket.emit('update-info', {
+		info : 'end'
+	});
 };
 
 LectureRuntime.prototype.removeClient = function(client_id) {
@@ -55,7 +70,20 @@ LectureRuntime.prototype.setStream = function(socket) {
 		that.screenData = data;
 		that.updateScreenSize();
 	});
+	this.stream.on('image', function(data){
+		for (_id in that.sittingClients) {
+			var socket = that.sittingClients[_id];
+			socket.emit('image', data);
+		}
+	});
 };
+
+LectureRuntime.prototype.imageTransfer = function(data) {
+	for (_id in this.sittingClients) {
+		var socket = this.sittingClients[_id];
+		socket.emit('image', data);
+	}
+}
 
 LectureRuntime.prototype.updateScreenSize = function() {
 	var that = this;
