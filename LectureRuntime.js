@@ -72,6 +72,10 @@ LectureRuntime.prototype.setStream = function(socket) {
 	this.stream.on('image', function(data){
 		that.sendToClients(data, 'image');
 	});
+	this.stream.on('clear-screen', function(data){
+		this.sendToClients(null, "clear-screen");
+	});
+	
 	this.lecture.data = [];
 	this.lecture.save();
 	this.sendToClients(null, "clear-screen");
