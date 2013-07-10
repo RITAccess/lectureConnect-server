@@ -63,7 +63,6 @@ LectureRuntime.prototype.setStream = function(socket) {
 	this.stream.on('disconnect', function(){
 		delete that.stream;
 	});
-	this.start();
 	this.stream.emit('status', {status : "ready"});
 	this.stream.emit('get-size');
 	this.stream.emit('set-cord', function(data){
@@ -71,11 +70,11 @@ LectureRuntime.prototype.setStream = function(socket) {
 		that.updateScreenSize();
 	});
 	this.stream.on('image', function(data){
-		for (_id in that.sittingClients) {
-			var socket = that.sittingClients[_id];
-			socket.emit('image', data);
-		}
+		that.sendToClients(data, 'image');
 	});
+	this.lecture.data = [];
+	this.lecture.save();
+	this.start();
 };
 
 LectureRuntime.prototype.imageTransfer = function(data) {
@@ -110,7 +109,7 @@ LectureRuntime.prototype.start = function() {
 		// Save data to lecture
 		that.lecture.data.push(data);
 		that.lecture.save();
-		that.sendToClients(data);
+		that.sendToClients(data, 'update');
 	});
 
 };
@@ -134,12 +133,12 @@ LectureRuntime.prototype.stop = function() {
 }
 
 // Running loop
-LectureRuntime.prototype.sendToClients = function(data) {
+LectureRuntime.prototype.sendToClients = function(data, action) {
 	// if (this.numberOfClients > 0)
 		// console.log(this.name + " pushing updates to " + this.numberOfClients + " clients");
 	for (_id in this.sittingClients) {
 		var socket = this.sittingClients[_id];
-		socket.emit('update', data);
+		socket.emit(action, data);
 	}
 }
 

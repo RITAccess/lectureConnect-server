@@ -2,12 +2,16 @@ extends layout
 
 block content
 	h3 Account Page
-	p Change Password
-	form(action='/account/changepassword', method='post')
-		input(type='password', placeholder='Old Password', name='password')
-		br
-		input(type='password', placeholder='New Password', name='newPass')
-		br
-		input(type='password', placeholder='Confirm Password', name='passcheck')
-		br
-		input(type='submit',value='Change')
+	.row
+		.span3
+			p Change Password
+			form(action='/account/changepassword', method='post')
+				input(type='password', placeholder='Old Password', name='password')
+				br
+				input(type='password', placeholder='New Password', name='newPass')
+				br
+				input(type='password', placeholder='Confirm Password', name='passcheck')
+				br
+				input(type='submit',value='Change')
+		.span4
+			p Accounts

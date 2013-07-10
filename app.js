@@ -128,7 +128,7 @@ io.sockets.on('connection', function(socket) {
 		console.log(data);
 		if ( data.name in lectures ) {
 			var lecture = lectures[data.name];
-			lecture.setStream(socket);	
+			lecture.setStream(socket);
 		} else {
 			socket.emit('status', {status : 'error', message : 'No lecture found'});
 		}	

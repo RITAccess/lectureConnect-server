@@ -5,6 +5,10 @@ var mongoose = require('mongoose')
   ,	db = require('../db');
 
 exports.index = function(req, res) {
+
+	
+
+	
 	res.render('account', {
 		title : "Accounts",
 		account : req.user,
