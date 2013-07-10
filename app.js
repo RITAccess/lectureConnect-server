@@ -111,7 +111,9 @@ io.sockets.on('connection', function(socket) {
 			var lect = lectures[data];
 			clients[socket.id] = lect;
 			lect.addClient(socket.id, socket);
-		} else console.log("No lecture active");
+		} else {
+			socket.emit('info', {request : "failed"});
+		};
 	});
 
 	// Handles client disconnection
