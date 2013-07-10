@@ -74,6 +74,7 @@ LectureRuntime.prototype.setStream = function(socket) {
 	});
 	this.lecture.data = [];
 	this.lecture.save();
+	this.sendToClients(null, "clear-screen");
 	this.start();
 };
 
