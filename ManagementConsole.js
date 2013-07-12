@@ -93,6 +93,7 @@ app.get('/logout', function(req, res){
 });
 app.get('/account', account.index);
 app.post('/account/changepassword', account.changepassword);
+app.post('/account/updatesysinfo', account.updatesysinfo);
 app.get('/lecture/:id', routes.lecture);
 app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);

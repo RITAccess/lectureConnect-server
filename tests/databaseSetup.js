@@ -17,6 +17,7 @@ db.once('open', function callback () {
 	// Grab Schema
 	var Lecture = mongoose.model('Lecture');
 	var User = mongoose.model('Users');
+	var System = mongoose.model('System');
 
 	var crypto = require('crypto');
 	var sha512 = crypto.createHash('sha512');
@@ -30,6 +31,11 @@ db.once('open', function callback () {
 	});
 
 	admin.save();
+
+	var sys = new System({
+		hostname : ""
+	});
+	sys.save();
 
 	read.on('line', function(passin){
 		if (passin == '')  { 

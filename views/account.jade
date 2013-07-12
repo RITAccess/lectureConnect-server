@@ -14,4 +14,18 @@ block content
 				br
 				input(type='submit',value='Change')
 		.span4
-			p Accounts
+			form(action='/account/updatesysinfo', method='post')
+				table.table
+					thead
+						tr
+							td System Settings
+					tbody
+						tr
+							td Hostname
+							td
+								input(type='text', value='#{sysinfo.hostname}', name='hostname')
+						tr
+							td
+							td
+								input(type='submit', value='Save', style='float:right')
+						

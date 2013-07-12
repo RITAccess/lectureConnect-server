@@ -6,18 +6,23 @@ var mongoose = require('mongoose')
 
 exports.index = function(req, res) {
 
-	
-
-	
-	res.render('account', {
-		title : "Accounts",
-		account : req.user,
-		active : "Account"
+	var System = mongoose.model("System");
+	System.findOne().exec(function(err, sys) {
+		
+		res.render('account', {
+			title : "Accounts",
+			account : req.user,
+			active : "Account",
+			sysinfo : {
+				hostname : sys.hostname
+			}
+		});
 	});
 }
 
 exports.changepassword = function(req, res) {
 	var User = mongoose.model('Users');
+	var that = this;
 	User.findOne({name : req.user}).exec(function(err, userAccount) {
 		if (err) console.log("Error");
 		if (userAccount == null) {
@@ -37,13 +42,18 @@ exports.changepassword = function(req, res) {
 				// update password
 				userAccount.passhash = hash;
 				userAccount.save(function(err, obj){
-					res.render('account', {
-						title : "Accounts",
-						account : req.user,
-						active : "Account"
-					});
+					res.redirect('/account');
 				});
 			}
 		}
+	});
+}
+
+exports.updatesysinfo = function(req, res) {
+	var System = mongoose.model("System");
+	System.findOne().exec(function(err, sys) {
+		sys.hostname = req.body.hostname;
+		sys.save();
+		res.redirect('/account');
 	});
 }

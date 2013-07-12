@@ -13,11 +13,18 @@ var lectureSchema = new mongoose.Schema({
 });
 mongoose.model('Lecture', lectureSchema);
 
+// User
 var userSchema = new mongoose.Schema({
 	name: String,
 	account: String,
 	passhash: String
 });
 mongoose.model('Users', userSchema);
+
+// Sys Info
+var sysSchema = new mongoose.Schema({
+	hostname: String
+});
+mongoose.model('System', sysSchema);
 
 module.exports = db;
