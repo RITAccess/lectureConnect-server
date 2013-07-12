@@ -10,6 +10,7 @@ var LectureRuntime = require('../LectureRuntime')
   ,	db = require('../db');
 
 var Lecture = mongoose.model('Lecture');
+var System = mongoose.model('System');
 
 exports.index = function(req, res){
 
@@ -68,15 +69,19 @@ exports.lecture = function(req, res) {
 			}
 		}
 
-		res.render('lectures', {
-			account : req.user,
-			title: data.name,
-			lecture: data,
-			clients : clients,
-			status : data.isActive ? "success" : "error",
-			stream_status : stream_status,
-			stream_host : stream_host
+		System.findOne().exec(function(err, sys){
+			res.render('lectures', {
+				account : req.user,
+				title: data.name,
+				lecture: data,
+				clients : clients,
+				status : data.isActive ? "success" : "error",
+				stream_status : stream_status,
+				stream_host : stream_host,
+				hostname : sys.hostname
+			});
 		});
+
 	});
 }
 

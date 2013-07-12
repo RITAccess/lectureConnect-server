@@ -1,19 +1,24 @@
 extends layout
 
 block content
-	h1 #{lecture.name}
-		if (lecture.isActive)
-			i.icon-ok-sign.status 
-				.status.online Online
-		else
-			i.icon-minus-sign.status 
-				.status.offline Offline
-	p #{lecture.description}
-	p
-		if (lecture.isActive)
-			a(href='/kill/'+lecture._id) Stop
-		else 
-			a(href='/start/'+lecture._id) Start
+	script(src='/javascripts/qr.js')
+	script
+		window.onload = function() {
+			var url = QRCode.generatePNG('{"url":"#{hostname}","lecture":"#{lecture.name}"}', {ecclevel : "M"});
+			$("#output").attr('src', url);
+		}
+	.row
+		.span2
+			h1 #{lecture.name}
+				
+			p #{lecture.description}
+			p
+				if (lecture.isActive)
+					a(href='/kill/'+lecture._id) Stop
+				else 
+					a(href='/start/'+lecture._id) Start
+		.span4
+			img#output(width='150', height='150')
 	.row
 		.span6
 			h3 Lecture Information
