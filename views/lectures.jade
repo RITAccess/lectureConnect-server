@@ -8,7 +8,7 @@ block content
 			$("#output").attr('src', url);
 		}
 	.row
-		.span2
+		.span3
 			h1 #{lecture.name}
 				
 			p #{lecture.description}
@@ -17,11 +17,12 @@ block content
 					a(href='/kill/'+lecture._id) Stop
 				else 
 					a(href='/start/'+lecture._id) Start
-		.span4
-			img#output(width='150', height='150')
-	.row
-		.span6
-			h3 Lecture Information
+			button.btn.btn-danger(id='clearData', meta=lecture._id) Clear All Data
+		.span2
+			img#output(width='170', height='170')
+
+		.span7
+			h4 Information
 			table.table.table-bordered.table-hover
 				tbody
 					tr(class=status)
@@ -33,7 +34,8 @@ block content
 					tr(class=stream_status)
 						td Streaming Server
 						td= stream_host
-		.span6
+	.row
+		.span5
 			h3 
 				| Connected Clients 
 				span.muted #{clients.length}
@@ -41,17 +43,12 @@ block content
 				table.table.table-bordered.table-hover
 					thead
 						tr
-							td UID
 							td Client
+							td UID
 					tbody
 					each client in clients
 						tr
-							td= client.id
 							td= client.name
+							td= client.id
 			else
 				h4.muted No Clients Connected
-	.row
-		.span9.offset3
-			button.btn.btn-danger(id='clearData', meta=lecture._id) Clear All Data
-
-
