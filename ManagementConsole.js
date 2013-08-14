@@ -6,6 +6,7 @@ var express = require('express')
   , routes = require('./routes')
   , account = require('./routes/account')
   , control = require('./routes/control')
+  , rest = require('./routes/rest')
   , https = require('https')
   , http = require('http')
   , path = require('path')
@@ -64,7 +65,7 @@ app.use(express.methodOverride());
 // Check auth
 app.use(function(req, res, next) {
 	// Check login
-	var pass = req.url.match(/\/stylesheets*|\/javascripts*|\/img*|\/signin/g);
+	var pass = req.url.match(/\/stylesheets*|\/javascripts*|\/img*|\/signin|\/v1\/*/g);
 	if (req.user != null || pass ) {
 		next(); // Allow static past (for development)
 	} else {
@@ -91,6 +92,7 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/signin');
 });
+
 app.get('/account', account.index);
 app.post('/account/changepassword', account.changepassword);
 app.post('/account/updatesysinfo', account.updatesysinfo);
@@ -98,6 +100,9 @@ app.get('/lecture/:id', routes.lecture);
 app.get('/start/:id', control.start);
 app.get('/kill/:id', control.destroy);
 app.get('/clear/:id', control.cleardata);
+
+// API routes
+app.get('/v1/lectures/findall', rest.findall);
 
 // Setup SSL
 var options = {
